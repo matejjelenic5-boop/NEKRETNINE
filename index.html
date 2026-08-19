@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="hr" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#e3ecfb" id="themeColorMeta">
+<title>Nekretnine</title>
+<style>
+  :root {
+    color-scheme: light;
+    --accent: #0A84FF;
+    --accent-2: #0669D6;
+    --danger: #FF3B30;
+    --income: #0B8A5E;
+    --vuk: #068C5C;
+    --warn: #B8790A;
+    --info: #0A6FC2;
+    --split: #D6467E;
+
+    --text: #0B0F19;
+    --text-2: rgba(60,60,67,0.62);
+    --text-3: rgba(60,60,67,0.40);
+
+    --glass: rgba(255,255,255,0.52);
+    --glass-brd: rgba(255,255,255,0.62);
+    --tile: rgba(255,255,255,0.40);
+    --tile-brd: rgba(255,255,255,0.55);
+    --tile-solid: rgba(255,255,255,0.88);
+    --hi: rgba(255,255,255,0.70);
+    --hi-2: rgba(255,255,255,0.60);
+
+    --hair: rgba(11,15,25,0.10);
+    --track: rgba(11,15,25,0.08);
+    --sh: rgba(11,25,60,0.10);
+    --sh-2: rgba(11,25,60,0.22);
+    --scrim: rgba(10,16,32,0.42);
+
+    --info-bg: rgba(10,111,194,0.08);
+    --info-brd: rgba(10,111,194,0.26);
+    --vuk-bg: rgba(6,140,92,0.08);
+    --vuk-brd: rgba(6,140,92,0.24);
+
+    --screen-bg:
+      radial-gradient(660px 420px at 88% 0%, rgba(10,132,255,0.55), transparent 62%),
+      radial-gradient(520px 380px at -12% 18%, rgba(96,165,255,0.60), transparent 66%),
+      radial-gradient(480px 400px at 12% 62%, rgba(0,206,201,0.26), transparent 64%),
+      radial-gradient(560px 460px at 62% 100%, rgba(233,69,96,0.24), transparent 64%),
+      linear-gradient(178deg, #eaf1fe 0%, #cadcf9 46%, #dde8fc 100%);
+
+    --radius: 18px;
+    --font: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
+  }
+
+  html[data-theme="dark"] {
+    color-scheme: dark;
+    --accent: #0A84FF;
+    --accent-2: #6FB6FF;
+    --danger: #FF453A;
+    --income: #30D158;
+    --vuk: #34D3A0;
+    --warn: #FFB340;
+    --info: #64B5FF;
+    --split: #FF7AB0;
+
+    --text: #F2F4F8;
+    --text-2: rgba(235,235,245,0.72);
+    --text-3: rgba(235,235,245,0.50);
+
+    --glass: rgba(255,255,255,0.22);
+    --glass-brd: rgba(255,255,255,0.16);
+    --tile: rgba(255,255,255,0.12);
+    --tile-brd: rgba(255,255,255,0.13);
+    --tile-solid: rgba(26,30,42,0.94);
+    --hi: rgba(255,255,255,0.15);
+    --hi-2: rgba(255,255,255,0.16);
+
+    --hair: rgba(255,255,255,0.14);
+    --track: rgba(255,255,255,0.12);
+    --sh: rgba(0,0,0,0.45);
+    --sh-2: rgba(0,0,0,0.62);
+    --scrim: rgba(0,0,0,0.62);
+
+    --info-bg: rgba(100,181,255,0.10);
+    --info-brd: rgba(100,181,255,0.26);
+    --vuk-bg: rgba(52,211,160,0.10);
+    --vuk-brd: rgba(52,211,160,0.26);
+
+    --screen-bg:
+      radial-gradient(640px 420px at 88% -2%, rgba(10,132,255,0.52), transparent 62%),
+      radial-gradient(520px 400px at -14% 16%, rgba(64,124,255,0.40), transparent 66%),
+      radial-gradient(460px 400px at 14% 64%, rgba(0,180,190,0.26), transparent 64%),
+      radial-gradient(540px 460px at 66% 102%, rgba(200,50,110,0.30), transparent 64%),
+      linear-gradient(178deg, #0d1526 0%, #070b16 48%, #0a1020 100%);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html { background: #dde8fc; }
+  html[data-theme="dark"] { background: #070b16; }
+  body {
+    font-family: var(--font);
+    color: var(--text);
+    min-height: 100vh;
+    max-width: 480px;
+    margin: 0 auto;
+    padding-bottom: 150px;
+    position: relative;
+  }
+  body::before {
+    content:''; position: fixed; inset: 0; z-index: -1;
+    background: var(--screen-bg);
+    background-attachment: fixed;
+  }
+
+  /* ── HEADER ─────────────────────────────────── */
+  .header {
+    position: sticky; top: calc(8px + env(safe-area-inset-top)); z-index: 50;
+    margin: calc(8px + env(safe-area-inset-top)) 14px 0;
+    padding: 18px 18px 16px;
+    border-radius: 26px;
+    background: var(--glass);
+    -webkit-backdrop-filter: blur(60px) saturate(200%);
+    backdrop-filter: blur(60px) saturate(200%);
+    border: 0.5px solid var(--glass-brd);
+    box-shadow: inset 0 1px 0 var(--hi-2), 0 10px 30px var(--sh);
+  }
+  .header-top { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+  .month-label { font-size:27px; font-weight:700; letter-spacing:-0.6px; }
+  .hdr-tools { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+  .sync-bar {
+    display:flex; align-items:center; gap:6px;
+    background: rgba(255,255,255,0.30);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 0.5px solid var(--glass-brd);
+    border-radius: 999px; padding: 5px 11px 5px 9px;
+    font-size: 11.5px; color: var(--text-2);
+    font-variant-numeric: tabular-nums; white-space: nowrap;
+  }
+  html[data-theme="dark"] .sync-bar { background: rgba(255,255,255,0.10); }
+  .sync-dot { width:7px; height:7px; border-radius:50%; background:var(--text-3); flex-shrink:0; }
+  .sync-dot.ok { background:#30D158; }
+  .sync-dot.err { background: var(--danger); }
+  .sync-dot.loading { background:#F5A524; animation: pulse 1s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  .theme-btn {
+    width:32px; height:32px; border-radius:50%; cursor:pointer;
+    background: rgba(255,255,255,0.30);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 0.5px solid var(--glass-brd);
+    font-size:14px; line-height:1;
+    display:flex; align-items:center; justify-content:center;
+  }
+  html[data-theme="dark"] .theme-btn { background: rgba(255,255,255,0.10); }
+  .theme-btn .t-dark { display:none; }
+  html[data-theme="dark"] .theme-btn .t-dark { display:inline; }
+  html[data-theme="dark"] .theme-btn .t-light { display:none; }
+
+  .header-total { margin-top:12px; display:flex; align-items:flex-end; justify-content:space-between; gap:12px; }
+  .total-label { font-size:12px; color:var(--text-2); }
+  .total-amount {
+    font-size:33px; font-weight:700; letter-spacing:-1.2px; line-height:1.05;
+    color: var(--accent); font-variant-numeric: tabular-nums; margin-top:2px;
+  }
+  .total-amount span { font-size:15px; font-weight:600; color:var(--text-3); letter-spacing:0; }
+
+  .month-nav {
+    display:flex; align-items:center; margin-bottom:4px;
+    background: rgba(255,255,255,0.30);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 0.5px solid var(--glass-brd);
+    border-radius: 999px; overflow:hidden;
+    box-shadow: inset 0 1px 0 var(--hi-2), 0 3px 10px var(--sh);
+  }
+  html[data-theme="dark"] .month-nav { background: rgba(255,255,255,0.10); }
+  .month-btn {
+    border:none; background:none; font-family:var(--font);
+    width:38px; height:34px; font-size:17px; color:var(--accent); cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .month-btn:active { opacity:0.5; }
+  .nav-sep { width:0.5px; height:18px; background:var(--hair); }
+
+  /* ── PILULE ─────────────────────────────────── */
+  .summary-scroll { display:flex; gap:8px; overflow-x:auto; padding:12px 14px 4px; scrollbar-width:none; }
+  .summary-scroll::-webkit-scrollbar { display:none; }
+  .cat-pill {
+    flex-shrink:0; text-align:center; cursor:pointer;
+    background: rgba(255,255,255,0.32);
+    -webkit-backdrop-filter: blur(24px) saturate(190%);
+    backdrop-filter: blur(24px) saturate(190%);
+    border: 0.5px solid var(--tile-brd);
+    border-radius: 20px; padding: 8px 14px;
+    box-shadow: inset 0 1px 0 var(--hi), 0 3px 12px var(--sh);
+  }
+  html[data-theme="dark"] .cat-pill { background: rgba(255,255,255,0.10); }
+  .cat-pill.active {
+    background: rgba(10,132,255,0.85); border-color: rgba(255,255,255,0.35);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.40), 0 5px 18px rgba(10,132,255,0.40);
+  }
+  .cat-pill-icon { font-size:16px; display:block; line-height:1.2; }
+  .cat-pill-name { font-size:10.5px; color:var(--text-2); display:block; margin-top:1px; }
+  .cat-pill-amount { font-size:11.5px; font-weight:600; display:block; margin-top:1px; font-variant-numeric:tabular-nums; }
+  .cat-pill.active .cat-pill-name { color:rgba(255,255,255,0.85); }
+  .cat-pill.active .cat-pill-amount { color:#fff; }
+
+  /* ── LISTA ──────────────────────────────────── */
+  .section-header {
+    display:flex; justify-content:space-between; align-items:baseline;
+    padding: 20px 22px 7px; font-size:13px;
+  }
+  .section-header b { font-weight:600; }
+  .section-header span { color:var(--text-2); font-variant-numeric:tabular-nums; }
+  .day-group { margin: 0 14px; display:flex; flex-direction:column; gap:5px; }
+  .expense-item {
+    display:flex; align-items:center; gap:12px; padding:11px 14px;
+    border-radius: 18px; cursor:pointer;
+    background: var(--tile);
+    -webkit-backdrop-filter: blur(22px) saturate(190%);
+    backdrop-filter: blur(22px) saturate(190%);
+    border: 0.5px solid var(--tile-brd);
+    box-shadow: inset 0 1px 0 var(--hi), 0 3px 14px var(--sh);
+    transition: border-color 0.15s;
+  }
+  .expense-item.expanded { border-color: var(--danger); }
+  .expense-icon {
+    width:38px; height:38px; border-radius:11px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center; font-size:18px;
+  }
+  .expense-info { flex:1; min-width:0; }
+  .expense-desc { font-size:15px; font-weight:500; letter-spacing:-0.2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .expense-meta { font-size:12px; color:var(--text-2); margin-top:1px; }
+  .expense-right { text-align:right; flex-shrink:0; }
+  .expense-amount { font-size:15.5px; font-weight:600; font-variant-numeric:tabular-nums; letter-spacing:-0.3px; }
+  .expense-who { font-size:11px; color:var(--text-3); margin-top:1px; }
+  .delete-btn {
+    display:none; align-items:center; justify-content:center; flex-shrink:0;
+    width:32px; height:32px; border-radius:50%; cursor:pointer;
+    background: rgba(255,59,48,0.14);
+    border: 0.5px solid rgba(255,59,48,0.35);
+    color: var(--danger); font-size:14px; font-family:var(--font);
+  }
+  .expense-item.expanded .delete-btn { display:flex; }
+
+  .empty-state { text-align:center; padding:48px 20px; color:var(--text-2); }
+  .empty-icon { font-size:44px; margin-bottom:12px; }
+  .empty-text { font-size:15px; line-height:1.5; }
+
+  /* ── KARTICE NEKRETNINA ─────────────────────── */
+  .np-wrap { padding: 14px 14px 0; }
+  .np-card {
+    background: var(--tile);
+    -webkit-backdrop-filter: blur(22px) saturate(190%);
+    backdrop-filter: blur(22px) saturate(190%);
+    border: 0.5px solid var(--tile-brd);
+    border-radius: 22px; padding:16px; margin-bottom:10px; cursor:pointer;
+    box-shadow: inset 0 1px 0 var(--hi), 0 3px 14px var(--sh);
+  }
+  .np-head { display:flex; align-items:center; gap:12px; }
+  .np-ico { width:44px; height:44px; border-radius:14px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:21px; }
+  .np-n { font-size:15px; font-weight:600; letter-spacing:-0.3px; line-height:1.2; }
+  .np-a { font-size:11.5px; color:var(--text-3); margin-top:2px; }
+  .badge { font-size:9.5px; font-weight:700; letter-spacing:0.6px; text-transform:uppercase; padding:5px 10px; border-radius:14px; white-space:nowrap; flex-shrink:0; }
+  .np-rows { margin-top:13px; border-top:0.5px solid var(--hair); padding-top:9px; }
+  .np-row { display:flex; justify-content:space-between; align-items:center; padding:5px 0; gap:10px; }
+  .np-row-l { font-size:12.5px; color:var(--text-2); }
+  .np-row-v { font-size:14px; font-weight:600; font-variant-numeric:tabular-nums; }
+  .np-row-e { font-size:11.5px; color:var(--text-3); font-style:italic; }
+  .np-add {
+    width:calc(100% - 0px); padding:15px; border-radius:20px; cursor:pointer;
+    background: var(--tile); border: 0.5px dashed var(--tile-brd);
+    color: var(--accent); font-size:15px; font-weight:600; font-family:var(--font);
+    margin-bottom:10px;
+  }
+
+  /* ── FAB + NAVIGACIJA ───────────────────────── */
+  .fab {
+    position:fixed; left:50%; transform:translateX(-50%);
+    bottom: calc(50px + env(safe-area-inset-bottom)); z-index:101;
+    width:58px; height:58px; border-radius:50%; cursor:pointer;
+    background: rgba(0,113,235,0.94); color:#fff; font-size:30px; font-weight:400;
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 0.5px solid rgba(255,255,255,0.70);
+    display:flex; align-items:center; justify-content:center;
+    box-shadow: 0 10px 26px rgba(0,90,200,0.48), inset 0 1px 0 rgba(255,255,255,0.55);
+    transition: transform 0.22s ease;
+    font-family: var(--font);
+  }
+  .fab.open { transform: translateX(-50%) rotate(45deg); }
+  .fpill {
+    position:fixed; bottom: calc(61px + env(safe-area-inset-bottom)); z-index:101;
+    height:36px; padding:0 16px; border:none; border-radius:18px; cursor:pointer;
+    font-family:var(--font); font-size:14px; font-weight:600; color:#fff;
+    display:flex; align-items:center;
+    box-shadow: 0 8px 22px var(--sh-2), inset 0 1px 0 rgba(255,255,255,0.30);
+    opacity:0; pointer-events:none;
+    transition: opacity 0.20s ease, transform 0.24s cubic-bezier(0.34,1.3,0.64,1);
+  }
+  .fpill.l { right: calc(50% + 34px); background: var(--danger); transform: translateX(26px) scale(0.9); }
+  .fpill.r { left:  calc(50% + 34px); background: var(--income); transform: translateX(-26px) scale(0.9); }
+  .fpill.show { opacity:1; pointer-events:auto; transform: translateX(0) scale(1); }
+
+  .bottom-nav {
+    position:fixed; left:50%; transform:translateX(-50%);
+    bottom: calc(20px + env(safe-area-inset-bottom)); z-index:100;
+    width: min(452px, calc(100% - 28px));
+    display:flex; gap:4px; padding:7px;
+    border-radius: 30px;
+    background: rgba(255,255,255,0.36);
+    -webkit-backdrop-filter: blur(48px) saturate(210%);
+    backdrop-filter: blur(48px) saturate(210%);
+    border: 0.5px solid var(--glass-brd);
+    box-shadow: 0 16px 36px var(--sh-2), inset 0 1px 0 var(--hi);
+  }
+  html[data-theme="dark"] .bottom-nav { background: rgba(255,255,255,0.10); }
+  .nav-item {
+    flex:1; border:none; background:none; cursor:pointer; font-family:var(--font);
+    display:flex; flex-direction:column; align-items:center; gap:3px;
+    padding:8px 0; border-radius:23px; color:var(--text-2); font-size:10.5px; font-weight:500;
+  }
+  .nav-item.active { background: rgba(10,132,255,0.18); color: var(--accent-2); }
+  .nav-item svg { width:21px; height:21px; }
+  .nav-gap { width:66px; flex-shrink:0; }
+
+  /* ── MODALI ─────────────────────────────────── */
+  .modal-overlay {
+    position:fixed; inset:0; z-index:200;
+    background: var(--scrim);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    display:none; align-items:flex-end; justify-content:center;
+  }
+  .modal-overlay.open { display:flex; }
+  .modal {
+    width: min(468px, calc(100% - 12px));
+    margin: 0 6px calc(6px + env(safe-area-inset-bottom));
+    background: var(--tile-solid);
+    -webkit-backdrop-filter: blur(40px) saturate(200%);
+    backdrop-filter: blur(40px) saturate(200%);
+    border: 0.5px solid var(--glass-brd);
+    border-radius: 28px;
+    padding: 14px 18px 24px;
+    max-height: 88vh; overflow-y:auto;
+    box-shadow: 0 -10px 50px var(--sh-2), inset 0 1px 0 var(--hi);
+    animation: slideUp 0.25s ease;
+  }
+  @keyframes slideUp { from { transform: translateY(40px); opacity:0; } to { transform: translateY(0); opacity:1; } }
+  .modal-handle { width:38px; height:4px; background:var(--hair); border-radius:2px; margin:0 auto 16px; }
+  .modal-title { font-size:20px; font-weight:700; margin-bottom:18px; letter-spacing:-0.4px; }
+
+  .form-group { margin-bottom:14px; }
+  .form-label { font-size:12px; font-weight:500; color:var(--text-2); margin-bottom:7px; display:block; }
+  .form-input {
+    width:100%; padding:13px 15px;
+    background: var(--tile);
+    border: 0.5px solid var(--tile-brd);
+    border-radius: 14px;
+    color: var(--text); font-size:16px; font-family:var(--font);
+    outline:none; transition: border-color 0.15s;
+  }
+  .form-input:focus { border-color: var(--accent); }
+  .form-input::placeholder { color: var(--text-3); }
+  select.form-input { appearance:none; -webkit-appearance:none; }
+  .amount-row { display:flex; gap:8px; }
+  .amount-row .form-input { flex:1; }
+  .currency-badge {
+    background: var(--tile); border: 0.5px solid var(--tile-brd);
+    border-radius:14px; padding:13px 15px; color:var(--text-2);
+    font-size:16px; font-weight:600; display:flex; align-items:center;
+  }
+  .cat-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:7px; }
+  .cat-btn {
+    background: var(--tile); border: 0.5px solid var(--tile-brd);
+    border-radius:14px; padding:11px 5px; cursor:pointer; text-align:center;
+    transition: all 0.15s; font-family:var(--font);
+  }
+  .cat-btn:active { transform: scale(0.95); }
+  .cat-btn.selected { border-color: var(--accent); background: rgba(10,132,255,0.18); }
+  .cat-btn-icon { font-size:21px; display:block; margin-bottom:3px; }
+  .cat-btn-name { font-size:10px; color:var(--text-2); font-weight:500; line-height:1.2; }
+  .cat-btn.selected .cat-btn-name { color: var(--accent-2); }
+  .submit-btn {
+    width:100%; padding:16px; border:none; border-radius:16px; cursor:pointer;
+    background: var(--accent); color:#fff; font-size:16px; font-weight:600;
+    font-family:var(--font); margin-top:6px;
+    box-shadow: 0 8px 20px rgba(10,132,255,0.35);
+    transition: opacity 0.15s, transform 0.1s;
+  }
+  .submit-btn:active { transform: scale(0.98); opacity:0.9; }
+  .submit-btn:disabled { opacity:0.5; }
+
+  /* ── TOAST ──────────────────────────────────── */
+  .toast {
+    position:fixed; bottom:140px; left:50%; transform:translateX(-50%);
+    background: var(--income); color:#fff;
+    padding:10px 20px; border-radius:24px;
+    font-size:14px; font-weight:600; z-index:999; opacity:0;
+    transition: opacity 0.2s; pointer-events:none; white-space:nowrap;
+    box-shadow: 0 8px 24px var(--sh-2);
+  }
+  .toast.show { opacity:1; }
+
+  /* ── ANALIZA ────────────────────────────────── */
+  .an-wrap { padding: 14px 14px 0; }
+  .an-note { font-size:11px; color:var(--text-2); padding:8px 4px 12px; line-height:1.5; }
+  .an-kpi { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px; }
+  .an-kpi-card, .an-card {
+    background: var(--tile);
+    -webkit-backdrop-filter: blur(22px) saturate(190%);
+    backdrop-filter: blur(22px) saturate(190%);
+    border: 0.5px solid var(--tile-brd);
+    border-radius: 20px; padding:14px; margin-bottom:10px;
+    box-shadow: inset 0 1px 0 var(--hi), 0 3px 14px var(--sh);
+  }
+  .an-kpi-card { margin-bottom:0; }
+  .an-kpi-l { font-size:9.5px; font-weight:700; color:var(--text-2); letter-spacing:1.2px; text-transform:uppercase; margin-bottom:6px; }
+  .an-kpi-v { font-size:20px; font-weight:700; letter-spacing:-0.6px; line-height:1; font-variant-numeric:tabular-nums; }
+  .an-kpi-s { font-size:10px; color:var(--text-3); margin-top:5px; }
+  .an-sec { font-size:10px; font-weight:700; color:var(--text-2); letter-spacing:1.8px; text-transform:uppercase; margin:20px 6px 10px; display:flex; align-items:center; gap:8px; }
+  .an-sec::after { content:''; flex:1; height:0.5px; background:var(--hair); }
+  .an-frow { display:flex; justify-content:space-between; align-items:center; gap:10px; padding:7px 0; border-bottom:0.5px solid var(--hair); }
+  .an-frow:last-child { border-bottom:none; }
+  .an-fname { font-size:12.5px; color:var(--text-2); flex:1; }
+  .an-famt { font-size:13.5px; font-weight:600; white-space:nowrap; font-variant-numeric:tabular-nums; }
+  .an-bar { height:5px; background:var(--track); border-radius:3px; overflow:hidden; margin-top:8px; }
+  .an-fill { height:100%; border-radius:3px; }
+  .an-tot { font-size:32px; font-weight:700; letter-spacing:-1px; font-variant-numeric:tabular-nums; }
+
+  .view { display:none; } .view.active { display:block; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div class="month-label" id="headerTitle">Portfelj</div>
+    <div class="hdr-tools">
+      <div class="sync-bar">
+        <div class="sync-dot loading" id="syncDot"></div>
+        <span id="syncText">Spajanje</span>
+      </div>
+      <button class="theme-btn" onclick="toggleTheme()" aria-label="Promijeni temu">
+        <span class="t-light">🌙</span><span class="t-dark">☀️</span>
+      </button>
+    </div>
+  </div>
+  <div class="header-total">
+    <div>
+      <div class="total-label" id="totalLabel">Ukupno uloženo</div>
+      <div class="total-amount" id="totalAmount">0 <span>EUR</span></div>
+    </div>
+    <div class="month-nav" id="monthNav" style="display:none">
+      <button class="month-btn" onclick="changeMonth(-1)">&#8249;</button>
+      <div class="nav-sep"></div>
+      <button class="month-btn" onclick="changeMonth(1)">&#8250;</button>
+    </div>
+  </div>
+</div>
+
+<div class="summary-scroll" id="propPills"></div>
+
+<div id="viewPortfelj" class="view active"><div class="np-wrap" id="portfeljContent"></div></div>
+<div id="viewTroskovi" class="view"><div id="expenseList"></div></div>
+<div id="viewNajam" class="view"><div id="incomeList"></div></div>
+<div id="viewAnaliza" class="view"><div class="an-wrap" id="analizaContent"></div></div>
+
+<button class="fpill l" id="fpillT" onclick="openExpenseModal()">Trošak</button>
+<button class="fpill r" id="fpillN" onclick="openIncomeModal()">Najam</button>
+<button class="fab" id="mainFab" onclick="toggleFab()">+</button>
+
+<nav class="bottom-nav">
+  <button class="nav-item active" id="navPortfelj" onclick="switchView('Portfelj')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-7 9 7v10a1 1 0 01-1 1H4a1 1 0 01-1-1z"/></svg>
+    Portfelj
+  </button>
+  <button class="nav-item" id="navTroskovi" onclick="switchView('Troskovi')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+    Troškovi
+  </button>
+  <div class="nav-gap"></div>
+  <button class="nav-item" id="navNajam" onclick="switchView('Najam')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+    Najam
+  </button>
+  <button class="nav-item" id="navAnaliza" onclick="switchView('Analiza')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></svg>
+    Analiza
+  </button>
+</nav>
+
+<!-- MODAL: TROŠAK -->
+<div class="modal-overlay" id="expModal" onclick="if(event.target===this)closeExpenseModal()">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Novi trošak</div>
+    <div class="form-group">
+      <label class="form-label">Nekretnina</label>
+      <select class="form-input" id="expProp"></select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Vrsta troška</label>
+      <div class="cat-grid" id="expTipGrid"></div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Opis</label>
+      <input class="form-input" id="expDesc" type="text" placeholder="npr. Vodoinstalater — kupaona" autocomplete="off">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Iznos</label>
+      <div class="amount-row">
+        <input class="form-input" id="expAmount" type="number" inputmode="decimal" placeholder="0,00" step="0.01" min="0">
+        <div class="currency-badge">EUR</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Datum</label>
+      <input class="form-input" id="expDate" type="date">
+    </div>
+    <button class="submit-btn" id="expSubmit" onclick="addExpense()">Dodaj trošak</button>
+  </div>
+</div>
+
+<!-- MODAL: NAJAM -->
+<div class="modal-overlay" id="incModal" onclick="if(event.target===this)closeIncomeModal()">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title" style="color:var(--income)">Naplaćeni najam</div>
+    <div class="form-group">
+      <label class="form-label">Nekretnina</label>
+      <select class="form-input" id="incProp"></select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Opis</label>
+      <input class="form-input" id="incDesc" type="text" placeholder="npr. Najam kolovoz" autocomplete="off">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Iznos</label>
+      <div class="amount-row">
+        <input class="form-input" id="incAmount" type="number" inputmode="decimal" placeholder="0,00" step="0.01" min="0">
+        <div class="currency-badge">EUR</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Datum</label>
+      <input class="form-input" id="incDate" type="date">
+    </div>
+    <button class="submit-btn" id="incSubmit" style="background:var(--income);box-shadow:0 8px 20px rgba(11,138,94,0.35)" onclick="addIncome()">Dodaj najam</button>
+  </div>
+</div>
+
+<!-- MODAL: NEKRETNINA -->
+<div class="modal-overlay" id="propModal" onclick="if(event.target===this)closePropModal()">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="propModalTitle">Nova nekretnina</div>
+    <div class="form-group">
+      <label class="form-label">Naziv</label>
+      <input class="form-input" id="propNaziv" type="text" placeholder="npr. Reisnerova 105" autocomplete="off">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Adresa</label>
+      <input class="form-input" id="propAdresa" type="text" placeholder="ulica i grad" autocomplete="off">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Status</label>
+      <select class="form-input" id="propStatus">
+        <option value="najam">U najmu</option>
+        <option value="renovacija">Renovacija</option>
+        <option value="ceka projekt">Čeka projekt</option>
+        <option value="prazno">Prazno</option>
+        <option value="prodano">Prodano</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Mjesečna najamnina (prazno ako nije u najmu)</label>
+      <div class="amount-row">
+        <input class="form-input" id="propNajam" type="number" inputmode="decimal" placeholder="0,00" step="0.01" min="0">
+        <div class="currency-badge">EUR</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Cijena kupnje</label>
+      <div class="amount-row">
+        <input class="form-input" id="propKupnja" type="number" inputmode="decimal" placeholder="0,00" step="0.01" min="0">
+        <div class="currency-badge">EUR</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Procijenjena vrijednost danas</label>
+      <div class="amount-row">
+        <input class="form-input" id="propVrijednost" type="number" inputmode="decimal" placeholder="0,00" step="0.01" min="0">
+        <div class="currency-badge">EUR</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Ikona</label>
+      <div class="cat-grid" id="propIkoneGrid"></div>
+    </div>
+    <button class="submit-btn" id="propSubmit" onclick="savePropModal()">Spremi</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ══ KONFIGURACIJA ═══════════════════════════════════
+const SUPABASE_URL = 'https://erlgqhhzihqsjtzqcxta.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVybGdxaGh6aWhxc2p0enFjeHRhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwMjc5ODksImV4cCI6MjA5NjYwMzk4OX0.r8dFG0vhEErj2NuSa_hEiLExgJoV3lOgJ-fJw0Nz6I8';
+
+const TIPOVI = [
+  { id:'rata',        name:'Rata kredita',  icon:'🏦', color:'#fd9644', kategorija:'kredit' },
+  { id:'rezija',      name:'Režija',        icon:'💡', color:'#0984e3', kategorija:'rezijeVuk' },
+  { id:'poboljsanje', name:'Poboljšanje',   icon:'🧱', color:'#00b894', kategorija:'materijal' },
+  { id:'odrzavanje',  name:'Održavanje',    icon:'🔧', color:'#778ca3', kategorija:'kuca' },
+  { id:'popravak',    name:'Izv. popravak', icon:'⚠️', color:'#e17055', kategorija:'kuca' },
+  { id:'porez',       name:'Porez',         icon:'🧾', color:'#d63031', kategorija:'porezi' },
+];
+const STATUSI = {
+  'najam':        { l:'U najmu',      c:'var(--income)' },
+  'renovacija':   { l:'Renovacija',   c:'#8b5cf6' },
+  'ceka projekt': { l:'Čeka projekt', c:'var(--warn)' },
+  'prazno':       { l:'Prazno',       c:'var(--text-2)' },
+  'prodano':      { l:'Prodano',      c:'var(--text-3)' },
+};
+const IKONE = ['🏡','🏠','🏢','🔑','🚧','🔨','🏘️','🌳','🅿️'];
+const BOJE  = ['#0A84FF','#00b894','#8b5cf6','#e0a107','#e17055','#00cec9','#d6467e','#636e72','#6c5ce7'];
+const MONTHS = ['Siječanj','Veljača','Ožujak','Travanj','Svibanj','Lipanj','Srpanj','Kolovoz','Rujan','Listopad','Studeni','Prosinac'];
+
+let nekretnine = [], troskovi = [], prihodi = [];
+let view = 'Portfelj', filterProp = null, curDate = new Date();
+let selTip = null, selIkona = '🏡', editPropId = null;
+
+// ══ TEMA ════════════════════════════════════════════
+let theme = 'light';
+function iconTint(c) { return c + (theme === 'dark' ? '4d' : '33'); }
+function applyTheme(t) {
+  theme = (t === 'dark') ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', theme);
+  const m = document.getElementById('themeColorMeta');
+  if (m) m.setAttribute('content', theme === 'dark' ? '#0a1020' : '#e3ecfb');
+  try { localStorage.setItem('tema-nekretnine', theme); } catch(e) {}
+}
+function toggleTheme() { applyTheme(theme === 'dark' ? 'light' : 'dark'); render(); }
+(function(){ let s = null; try { s = localStorage.getItem('tema-nekretnine'); } catch(e) {} applyTheme(s || 'light'); })();
+
+// ══ POMOĆNE ═════════════════════════════════════════
+const fmt = n => (n||0).toLocaleString('hr-HR',{minimumFractionDigits:2,maximumFractionDigits:2});
+const mKey = d => (d||'').slice(0,7);
+const mLabel = k => { const [y,m]=k.split('-'); return MONTHS[parseInt(m,10)-1].slice(0,3)+' '+y.slice(2); };
+const tipById = id => TIPOVI.find(t=>t.id===id) || TIPOVI[TIPOVI.length-1];
+const npById = id => nekretnine.find(n=>String(n.id)===String(id)) || null;
+function npBoja(n) { return n.boja || BOJE[(n.id||0) % BOJE.length]; }
+function npKratko(n) { return n.naziv.includes('—') ? n.naziv.split('—')[1].trim() : n.naziv.split(',')[0]; }
+const H = { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY };
+const HJ = Object.assign({}, H, { 'Content-Type':'application/json', 'Prefer':'return=minimal' });
+
+function setSync(state, text) {
+  document.getElementById('syncDot').className = 'sync-dot ' + state;
+  document.getElementById('syncText').textContent = text;
+}
+function showToast(msg, err) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = err ? 'var(--danger)' : 'var(--income)';
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2500);
+}
+
+// ══ DOHVAT ══════════════════════════════════════════
+async function fetchAll() {
+  try {
+    setSync('loading','Učitavanje');
+    const [rn, rt, rp] = await Promise.all([
+      fetch(SUPABASE_URL+'/rest/v1/nekretnine?select=*&order=id', { headers: H }),
+      fetch(SUPABASE_URL+'/rest/v1/troskovi?select=*&np_tip=not.is.null', { headers: H }),
+      fetch(SUPABASE_URL+'/rest/v1/prihodi?select=*&nekretnina_id=not.is.null', { headers: H }),
+    ]);
+    const dn = await rn.json(), dt = await rt.json(), dp = await rp.json();
+    if (Array.isArray(dn)) nekretnine = dn.filter(n => n.aktivna !== false);
+    if (Array.isArray(dt)) troskovi = dt.map(r => ({
+      id:String(r.id), desc:r.opis||'', amount:parseFloat(r.iznos)||0,
+      tip:r.np_tip||'', np:r.nekretnina_id, date:r.datum||'', who:r.tko||''
+    }));
+    if (Array.isArray(dp)) prihodi = dp.map(r => ({
+      id:String(r.id), desc:r.opis||'', amount:parseFloat(r.iznos)||0,
+      np:r.nekretnina_id, date:r.datum||'', who:r.tko||''
+    }));
+    setSync('ok', new Date().toLocaleTimeString('hr-HR',{hour:'2-digit',minute:'2-digit'}));
+    render();
+  } catch(e) {
+    console.error(e);
+    setSync('err','Greška');
+  }
+}
+
+async function post(table, body) {
+  for (let i=1; i<=3; i++) {
+    try {
+      const r = await fetch(SUPABASE_URL+'/rest/v1/'+table, { method:'POST', headers:HJ, body:JSON.stringify(body) });
+      if (r.ok) return;
+      if (i===3) throw new Error('POST '+r.status);
+    } catch(e) { if (i===3) throw e; await new Promise(r=>setTimeout(r,1000*i)); }
+  }
+}
+async function patch(table, id, body) {
+  const r = await fetch(SUPABASE_URL+'/rest/v1/'+table+'?id=eq.'+id, { method:'PATCH', headers:HJ, body:JSON.stringify(body) });
+  if (!r.ok) throw new Error('PATCH '+r.status);
+}
+async function del(table, id) {
+  const r = await fetch(SUPABASE_URL+'/rest/v1/'+table+'?id=eq.'+id, { method:'DELETE', headers:H });
+  if (!r.ok) throw new Error('DELETE '+r.status);
+}
+
+// ══ IZRAČUNI ════════════════════════════════════════
+function propStats(npId) {
+  const t = troskovi.filter(x => String(x.np) === String(npId));
+  const p = prihodi.filter(x => String(x.np) === String(npId));
+  const sum = a => a.reduce((s,x)=>s+x.amount,0);
+  const meseci = new Set([...t, ...p].map(x=>mKey(x.date)).filter(Boolean));
+  const nm = Math.max(meseci.size, 1);
+  const rate = t.filter(x=>x.tip==='rata').sort((a,b)=>b.date.localeCompare(a.date));
+  return {
+    ulozeno:   sum(t.filter(x=>x.tip==='poboljsanje')),
+    rezije:    sum(t.filter(x=>x.tip==='rezija')) / nm,
+    odrzavanje:sum(t.filter(x=>x.tip==='odrzavanje' || x.tip==='popravak')) / nm,
+    rata:      rate.length ? rate[0].amount : null,
+    najamUk:   sum(p),
+    svi:       sum(t),
+    brojUnosa: t.length,
+  };
+}
+function cashFlow(n, s) {
+  if (!n.najamnina) return null;
+  return n.najamnina - (s.rata||0) - s.rezije - s.odrzavanje;
+}
+
+// ══ RENDER ══════════════════════════════════════════
+function render() {
+  const t = document.getElementById('headerTitle');
+  const l = document.getElementById('totalLabel');
+  const a = document.getElementById('totalAmount');
+  const showMonth = (view === 'Troskovi' || view === 'Najam');
+  document.getElementById('monthNav').style.display = showMonth ? 'flex' : 'none';
+  document.getElementById('propPills').style.display = (view === 'Analiza') ? 'none' : 'flex';
+
+  const ulozenoSve = nekretnine.reduce((s,n)=>s+propStats(n.id).ulozeno, 0);
+
+  if (view === 'Troskovi') {
+    const m = monthItems(troskovi);
+    t.textContent = MONTHS[curDate.getMonth()] + ' ' + curDate.getFullYear();
+    l.textContent = 'Troškovi nekretnina';
+    a.innerHTML = fmt(m.reduce((s,x)=>s+x.amount,0)) + ' <span>EUR</span>';
+    a.style.color = 'var(--accent)';
+  } else if (view === 'Najam') {
+    const m = monthItems(prihodi);
+    t.textContent = MONTHS[curDate.getMonth()] + ' ' + curDate.getFullYear();
+    l.textContent = 'Naplaćeni najam';
+    a.innerHTML = fmt(m.reduce((s,x)=>s+x.amount,0)) + ' <span>EUR</span>';
+    a.style.color = 'var(--income)';
+  } else {
+    t.textContent = (view === 'Analiza') ? 'Analiza' : 'Portfelj';
+    l.textContent = 'Ukupno uloženo';
+    a.innerHTML = fmt(ulozenoSve) + ' <span>EUR</span>';
+    a.style.color = 'var(--accent)';
+  }
+
+  renderPills();
+  if (view === 'Portfelj') renderPortfelj();
+  else if (view === 'Troskovi') renderTroskovi();
+  else if (view === 'Najam') renderNajam();
+  else renderAnaliza();
+}
+
+function monthItems(arr) {
+  return arr.filter(x => {
+    if (!x.date) return false;
+    const d = new Date(x.date + 'T00:00:00');
+    const inMonth = d.getMonth() === curDate.getMonth() && d.getFullYear() === curDate.getFullYear();
+    const inProp = !filterProp || String(x.np) === String(filterProp);
+    return inMonth && inProp;
+  });
+}
+function changeMonth(d) { curDate = new Date(curDate.getFullYear(), curDate.getMonth()+d, 1); render(); }
+function setFilter(id) { filterProp = id; render(); }
+
+function renderPills() {
+  const el = document.getElementById('propPills');
+  const uk = nekretnine.reduce((s,n)=>s+propStats(n.id).ulozeno, 0);
+  let h = '<div class="cat-pill ' + (!filterProp?'active':'') + '" onclick="setFilter(null)">' +
+    '<span class="cat-pill-icon">🏘️</span><span class="cat-pill-name">Sve</span>' +
+    '<span class="cat-pill-amount">' + fmt(uk) + ' €</span></div>';
+  nekretnine.forEach(n => {
+    const s = propStats(n.id);
+    h += '<div class="cat-pill ' + (String(filterProp)===String(n.id)?'active':'') + '" onclick="setFilter(' + n.id + ')">' +
+      '<span class="cat-pill-icon">' + (n.ikona||'🏠') + '</span>' +
+      '<span class="cat-pill-name">' + npKratko(n) + '</span>' +
+      '<span class="cat-pill-amount">' + fmt(s.ulozeno) + ' €</span></div>';
+  });
+  el.innerHTML = h;
+}
+
+function renderPortfelj() {
+  const el = document.getElementById('portfeljContent');
+  if (!nekretnine.length) {
+    el.innerHTML = '<div class="empty-state"><div class="empty-icon">🏘️</div>' +
+      '<div class="empty-text">Još nema nekretnina.</div></div>' +
+      '<button class="np-add" onclick="openPropModal(null)">+ Dodaj nekretninu</button>';
+    return;
+  }
+  let h = '';
+  nekretnine.forEach(n => {
+    const s = propStats(n.id), st = STATUSI[n.status] || STATUSI['prazno'];
+    const cf = cashFlow(n, s), boja = npBoja(n);
+    h += '<div class="np-card" onclick="openPropModal(' + n.id + ')">' +
+      '<div class="np-head">' +
+        '<div class="np-ico" style="background:' + iconTint(boja) + '">' + (n.ikona||'🏠') + '</div>' +
+        '<div style="flex:1;min-width:0"><div class="np-n">' + n.naziv + '</div>' +
+        '<div class="np-a">' + (n.adresa||'') + '</div></div>' +
+        '<div class="badge" style="background:' + iconTint(boja) + ';color:' + st.c + '">' + st.l + '</div>' +
+      '</div><div class="np-rows">' +
+        row('Uloženo', s.ulozeno ? fmt(s.ulozeno)+' €' : null, 'var(--vuk)') +
+        row('Najamnina / mj', n.najamnina ? fmt(n.najamnina)+' €' : null) +
+        row('Rata / mj', s.rata ? fmt(s.rata)+' €' : null) +
+        row('Režije + održavanje / mj', (s.rezije+s.odrzavanje) ? fmt(s.rezije+s.odrzavanje)+' €' : null) +
+        '<div class="np-row" style="border-top:0.5px solid var(--hair);margin-top:6px;padding-top:9px">' +
+          '<span class="np-row-l" style="font-weight:600;color:var(--text)">Cash flow / mj</span>' +
+          (cf === null
+            ? '<span class="np-row-e">unesi najamninu</span>'
+            : '<span class="np-row-v" style="color:' + (cf>=0?'var(--income)':'var(--danger)') + '">' + (cf>=0?'+':'−') + fmt(Math.abs(cf)) + ' €</span>') +
+        '</div>' +
+      '</div></div>';
+  });
+  h += '<button class="np-add" onclick="openPropModal(null)">+ Dodaj nekretninu</button>';
+  el.innerHTML = h;
+}
+function row(label, val, color) {
+  return '<div class="np-row"><span class="np-row-l">' + label + '</span>' +
+    (val ? '<span class="np-row-v"' + (color?' style="color:'+color+'"':'') + '>' + val + '</span>'
+         : '<span class="np-row-e">nije uneseno</span>') + '</div>';
+}
+
+function renderTroskovi() {
+  const el = document.getElementById('expenseList');
+  const items = monthItems(troskovi).sort((a,b)=>b.date.localeCompare(a.date));
+  if (!items.length) {
+    el.innerHTML = '<div class="empty-state"><div class="empty-icon">🧾</div>' +
+      '<div class="empty-text">Nema troškova za ovaj mjesec.<br>Dodaj prvi plusom ispod.</div></div>';
+    return;
+  }
+  const g = {};
+  items.forEach(x => {
+    const d = new Date(x.date+'T00:00:00');
+    const k = d.toLocaleDateString('hr-HR',{weekday:'short',day:'numeric',month:'long'});
+    (g[k] = g[k] || []).push(x);
+  });
+  let h = '';
+  Object.entries(g).forEach(([k, rows]) => {
+    h += '<div class="section-header"><b>' + k + '</b><span>' + fmt(rows.reduce((s,x)=>s+x.amount,0)) + ' €</span></div>';
+    h += '<div class="day-group">';
+    rows.forEach(x => {
+      const t = tipById(x.tip), n = npById(x.np);
+      h += '<div class="expense-item" id="it-' + x.id + '" onclick="toggleExpand(\'' + x.id + '\')">' +
+        '<div class="expense-icon" style="background:' + iconTint(t.color) + '">' + t.icon + '</div>' +
+        '<div class="expense-info"><div class="expense-desc">' + (x.desc||t.name) + '</div>' +
+        '<div class="expense-meta">' + t.name + '</div></div>' +
+        '<div class="expense-right"><div class="expense-amount">' + fmt(x.amount) + ' €</div>' +
+        '<div class="expense-who">' + (n ? npKratko(n) : 'portfelj') + '</div></div>' +
+        '<button class="delete-btn" onclick="removeItem(event,\'troskovi\',\'' + x.id + '\')">✕</button></div>';
+    });
+    h += '</div>';
+  });
+  el.innerHTML = h;
+}
+
+function renderNajam() {
+  const el = document.getElementById('incomeList');
+  const items = monthItems(prihodi).sort((a,b)=>b.date.localeCompare(a.date));
+  if (!items.length) {
+    el.innerHTML = '<div class="empty-state"><div class="empty-icon">🔑</div>' +
+      '<div class="empty-text">Nema naplaćenog najma za ovaj mjesec.<br>Dodaj prvi plusom ispod.</div></div>';
+    return;
+  }
+  let h = '<div class="section-header"><b>' + MONTHS[curDate.getMonth()] + '</b><span>' +
+    fmt(items.reduce((s,x)=>s+x.amount,0)) + ' €</span></div><div class="day-group">';
+  items.forEach(x => {
+    const n = npById(x.np);
+    const d = new Date(x.date+'T00:00:00');
+    h += '<div class="expense-item" id="it-' + x.id + '" onclick="toggleExpand(\'' + x.id + '\')">' +
+      '<div class="expense-icon" style="background:' + iconTint('#0B8A5E') + '">🔑</div>' +
+      '<div class="expense-info"><div class="expense-desc">' + (x.desc||'Najam') + '</div>' +
+      '<div class="expense-meta">' + d.toLocaleDateString('hr-HR',{day:'numeric',month:'short'}) + '</div></div>' +
+      '<div class="expense-right"><div class="expense-amount" style="color:var(--income)">+' + fmt(x.amount) + ' €</div>' +
+      '<div class="expense-who">' + (n ? npKratko(n) : '') + '</div></div>' +
+      '<button class="delete-btn" onclick="removeItem(event,\'prihodi\',\'' + x.id + '\')">✕</button></div>';
+  });
+  el.innerHTML = h + '</div>';
+}
+
+function renderAnaliza() {
+  const el = document.getElementById('analizaContent');
+  if (!nekretnine.length) {
+    el.innerHTML = '<div class="empty-state"><div class="empty-icon">📊</div><div class="empty-text">Nema podataka.</div></div>';
+    return;
+  }
+  const stats = nekretnine.map(n => ({ n, s: propStats(n.id) }));
+  const ulozenoUk = stats.reduce((a,x)=>a+x.s.ulozeno, 0);
+  const najamUk = nekretnine.reduce((a,n)=>a+(n.najamnina||0), 0);
+  const cfUk = stats.reduce((a,x)=>{ const c = cashFlow(x.n, x.s); return a + (c||0); }, 0);
+  const uNajmu = nekretnine.filter(n=>n.status==='najam').length;
+  const vrijednostUk = nekretnine.reduce((a,n)=>a+(n.vrijednost||0), 0);
+  const porezPortfelj = troskovi.filter(x=>!x.np && x.tip==='porez').reduce((a,x)=>a+x.amount,0);
+
+  let h = '<div class="an-kpi">' +
+    kpi('Uloženo ukupno', fmt(ulozenoUk)+' €', nekretnine.length + ' nekretnine', 'var(--accent)') +
+    kpi('U najmu', uNajmu + ' / ' + nekretnine.length, 'ostale u pripremi', '') +
+    kpi('Najam / mj', najamUk ? fmt(najamUk)+' €' : 'nije uneseno', 'zbroj svih', najamUk?'var(--income)':'var(--text-3)') +
+    kpi('Cash flow / mj', najamUk ? (cfUk>=0?'+':'−')+fmt(Math.abs(cfUk))+' €' : 'čeka podatke',
+        'najam − rata − troškovi', najamUk ? (cfUk>=0?'var(--income)':'var(--danger)') : 'var(--text-3)') +
+    '</div>';
+
+  if (vrijednostUk) {
+    h += '<div class="an-card"><div class="an-frow"><div class="an-fname">Procijenjena vrijednost portfelja</div>' +
+      '<div class="an-famt" style="color:var(--accent)">' + fmt(vrijednostUk) + ' €</div></div></div>';
+  }
+
+  h += '<div class="an-sec">Svaka nekretnina posebno</div>';
+  stats.forEach(({n, s}) => {
+    const st = STATUSI[n.status] || STATUSI['prazno'];
+    const cf = cashFlow(n, s), boja = npBoja(n);
+    const pct = ulozenoUk ? s.ulozeno/ulozenoUk*100 : 0;
+    const yieldBruto = (n.najamnina && n.vrijednost) ? (n.najamnina*12/n.vrijednost*100) : null;
+    h += '<div class="an-card">' +
+      '<div class="np-head" style="margin-bottom:10px">' +
+        '<div class="np-ico" style="background:' + iconTint(boja) + ';width:36px;height:36px;font-size:17px;border-radius:12px">' + (n.ikona||'🏠') + '</div>' +
+        '<div style="flex:1;min-width:0"><div class="np-n" style="font-size:14px">' + n.naziv + '</div></div>' +
+        '<div class="badge" style="background:' + iconTint(boja) + ';color:' + st.c + '">' + st.l + '</div>' +
+      '</div>' +
+      frow('Uloženo (poboljšanja)', s.ulozeno ? fmt(s.ulozeno)+' €' : '—', 'var(--vuk)') +
+      frow('Ukupno troškova', fmt(s.svi)+' € · ' + s.brojUnosa + ' unosa', '') +
+      frow('Najamnina', n.najamnina ? fmt(n.najamnina)+' €' : 'nije uneseno', n.najamnina?'var(--income)':'var(--text-3)') +
+      frow('Rata kredita', s.rata ? fmt(s.rata)+' €' : 'nije uneseno', s.rata?'var(--warn)':'var(--text-3)') +
+      frow('Režije + održavanje / mj', (s.rezije+s.odrzavanje) ? fmt(s.rezije+s.odrzavanje)+' €' : '—', '') +
+      (yieldBruto !== null ? frow('Bruto yield', yieldBruto.toFixed(2)+' %', 'var(--accent)') : '') +
+      '<div class="an-frow"><div class="an-fname" style="font-weight:600;color:var(--text)">Cash flow / mj</div>' +
+      '<div class="an-famt" style="color:' + (cf===null?'var(--text-3)':(cf>=0?'var(--income)':'var(--danger)')) + '">' +
+      (cf===null ? 'unesi najamninu' : (cf>=0?'+':'−')+fmt(Math.abs(cf))+' €') + '</div></div>' +
+      '<div class="an-bar"><div class="an-fill" style="width:' + pct + '%;background:' + boja + '"></div></div>' +
+      '<div style="font-size:10px;color:var(--text-3);margin-top:5px">' + pct.toFixed(1) + '% ukupno uloženog</div>' +
+    '</div>';
+  });
+
+  if (porezPortfelj) {
+    h += '<div class="an-sec">Razina portfelja</div><div class="an-card">' +
+      frow('🧾 Porezi — nisu vezani na nekretninu', fmt(porezPortfelj)+' €', 'var(--danger)') +
+      '<div style="font-size:10px;color:var(--text-3);margin-top:9px;line-height:1.5">' +
+      'Porez na najam i porez na nekretninu vode se na razini portfelja.</div></div>';
+  }
+  h += '<div style="height:16px"></div>';
+  el.innerHTML = h;
+}
+function kpi(l, v, s, c) {
+  return '<div class="an-kpi-card"><div class="an-kpi-l">' + l + '</div>' +
+    '<div class="an-kpi-v"' + (c?' style="color:'+c+(v.length>12?';font-size:14px':'')+'"':'') + '>' + v + '</div>' +
+    '<div class="an-kpi-s">' + s + '</div></div>';
+}
+function frow(l, v, c) {
+  return '<div class="an-frow"><div class="an-fname">' + l + '</div>' +
+    '<div class="an-famt"' + (c?' style="color:'+c+'"':'') + '>' + v + '</div></div>';
+}
+
+function toggleExpand(id) {
+  const el = document.getElementById('it-'+id);
+  const was = el.classList.contains('expanded');
+  document.querySelectorAll('.expense-item.expanded').forEach(e=>e.classList.remove('expanded'));
+  if (!was) el.classList.add('expanded');
+}
+async function removeItem(ev, table, id) {
+  ev.stopPropagation();
+  if (!confirm('Obrisati ovu stavku?')) return;
+  setSync('loading','Brisanje');
+  try { await del(table, id); await fetchAll(); showToast('Obrisano'); }
+  catch(e) { setSync('err','Greška'); showToast('Greška pri brisanju', true); }
+}
+
+// ══ FAB ═════════════════════════════════════════════
+let fabOpen = false;
+function toggleFab() {
+  fabOpen = !fabOpen;
+  document.getElementById('mainFab').classList.toggle('open', fabOpen);
+  document.getElementById('fpillT').classList.toggle('show', fabOpen);
+  document.getElementById('fpillN').classList.toggle('show', fabOpen);
+}
+
+// ══ MODAL: TROŠAK ═══════════════════════════════════
+function propOptions(sel) {
+  return nekretnine.map(n => '<option value="' + n.id + '"' + (String(sel)===String(n.id)?' selected':'') + '>' +
+    (n.ikona||'🏠') + '  ' + n.naziv + '</option>').join('');
+}
+function openExpenseModal() {
+  if (fabOpen) toggleFab();
+  if (!nekretnine.length) { showToast('Prvo dodaj nekretninu', true); return; }
+  document.getElementById('expProp').innerHTML = propOptions(filterProp);
+  document.getElementById('expTipGrid').innerHTML = TIPOVI.map(t =>
+    '<div class="cat-btn" id="tb-' + t.id + '" onclick="selectTip(\'' + t.id + '\')">' +
+    '<span class="cat-btn-icon">' + t.icon + '</span>' +
+    '<span class="cat-btn-name">' + t.name + '</span></div>').join('');
+  document.getElementById('expDate').value = new Date().toISOString().split('T')[0];
+  document.getElementById('expModal').classList.add('open');
+}
+function closeExpenseModal() {
+  document.getElementById('expModal').classList.remove('open');
+  selTip = null;
+  document.getElementById('expDesc').value = '';
+  document.getElementById('expAmount').value = '';
+  const b = document.getElementById('expSubmit');
+  b.disabled = false; b.textContent = 'Dodaj trošak';
+}
+function selectTip(id) {
+  selTip = id;
+  document.querySelectorAll('#expTipGrid .cat-btn').forEach(b=>b.classList.remove('selected'));
+  document.getElementById('tb-'+id).classList.add('selected');
+}
+async function addExpense() {
+  const npId = document.getElementById('expProp').value;
+  const desc = document.getElementById('expDesc').value.trim();
+  const amount = parseFloat(document.getElementById('expAmount').value);
+  const date = document.getElementById('expDate').value;
+  if (!selTip) { showToast('Odaberi vrstu troška', true); return; }
+  if (!amount || amount <= 0) { showToast('Unesi iznos', true); return; }
+  if (!date) { showToast('Odaberi datum', true); return; }
+  const t = tipById(selTip);
+  const b = document.getElementById('expSubmit');
+  b.disabled = true; b.textContent = 'Spremanje...';
+  setSync('loading','Spremanje');
+  try {
+    await post('troskovi', {
+      opis: desc || t.name,
+      iznos: amount,
+      kategorija: t.kategorija,
+      tko: 'Matej',
+      datum: date,
+      nekretnina_id: parseInt(npId,10),
+      np_tip: selTip
+    });
+    closeExpenseModal();
+    curDate = new Date(date + 'T00:00:00');
+    await fetchAll();
+    showToast('Trošak dodan');
+  } catch(e) {
+    b.disabled = false; b.textContent = 'Dodaj trošak';
+    setSync('err','Greška'); showToast('Greška pri spremanju', true);
+  }
+}
+
+// ══ MODAL: NAJAM ════════════════════════════════════
+function openIncomeModal() {
+  if (fabOpen) toggleFab();
+  if (!nekretnine.length) { showToast('Prvo dodaj nekretninu', true); return; }
+  document.getElementById('incProp').innerHTML = propOptions(filterProp);
+  document.getElementById('incDate').value = new Date().toISOString().split('T')[0];
+  document.getElementById('incModal').classList.add('open');
+}
+function closeIncomeModal() {
+  document.getElementById('incModal').classList.remove('open');
+  document.getElementById('incDesc').value = '';
+  document.getElementById('incAmount').value = '';
+  const b = document.getElementById('incSubmit');
+  b.disabled = false; b.textContent = 'Dodaj najam';
+}
+async function addIncome() {
+  const npId = document.getElementById('incProp').value;
+  const desc = document.getElementById('incDesc').value.trim();
+  const amount = parseFloat(document.getElementById('incAmount').value);
+  const date = document.getElementById('incDate').value;
+  if (!amount || amount <= 0) { showToast('Unesi iznos', true); return; }
+  if (!date) { showToast('Odaberi datum', true); return; }
+  const b = document.getElementById('incSubmit');
+  b.disabled = true; b.textContent = 'Spremanje...';
+  setSync('loading','Spremanje');
+  try {
+    await post('prihodi', {
+      opis: desc || 'Najam',
+      iznos: amount,
+      kategorija: 'najam',
+      tko: 'Matej',
+      datum: date,
+      nekretnina_id: parseInt(npId,10)
+    });
+    closeIncomeModal();
+    curDate = new Date(date + 'T00:00:00');
+    await fetchAll();
+    showToast('Najam dodan');
+  } catch(e) {
+    b.disabled = false; b.textContent = 'Dodaj najam';
+    setSync('err','Greška'); showToast('Greška pri spremanju', true);
+  }
+}
+
+// ══ MODAL: NEKRETNINA ═══════════════════════════════
+function openPropModal(id) {
+  editPropId = id;
+  const n = id ? npById(id) : null;
+  document.getElementById('propModalTitle').textContent = n ? n.naziv : 'Nova nekretnina';
+  document.getElementById('propNaziv').value = n ? (n.naziv||'') : '';
+  document.getElementById('propAdresa').value = n ? (n.adresa||'') : '';
+  document.getElementById('propStatus').value = n ? (n.status||'najam') : 'najam';
+  document.getElementById('propNajam').value = (n && n.najamnina) ? n.najamnina : '';
+  document.getElementById('propKupnja').value = (n && n.cijena_kupnje) ? n.cijena_kupnje : '';
+  document.getElementById('propVrijednost').value = (n && n.vrijednost) ? n.vrijednost : '';
+  selIkona = n ? (n.ikona || '🏡') : '🏡';
+  document.getElementById('propIkoneGrid').innerHTML = IKONE.map(i =>
+    '<div class="cat-btn' + (i===selIkona?' selected':'') + '" id="ik-' + i + '" onclick="selectIkona(\'' + i + '\')">' +
+    '<span class="cat-btn-icon">' + i + '</span></div>').join('');
+  document.getElementById('propModal').classList.add('open');
+}
+function closePropModal() {
+  document.getElementById('propModal').classList.remove('open');
+  editPropId = null;
+  const b = document.getElementById('propSubmit');
+  b.disabled = false; b.textContent = 'Spremi';
+}
+function selectIkona(i) {
+  selIkona = i;
+  document.querySelectorAll('#propIkoneGrid .cat-btn').forEach(b=>b.classList.remove('selected'));
+  document.getElementById('ik-'+i).classList.add('selected');
+}
+async function savePropModal() {
+  const naziv = document.getElementById('propNaziv').value.trim();
+  if (!naziv) { showToast('Unesi naziv', true); return; }
+  const body = {
+    naziv: naziv,
+    adresa: document.getElementById('propAdresa').value.trim(),
+    status: document.getElementById('propStatus').value,
+    najamnina: parseFloat(document.getElementById('propNajam').value) || null,
+    cijena_kupnje: parseFloat(document.getElementById('propKupnja').value) || null,
+    vrijednost: parseFloat(document.getElementById('propVrijednost').value) || null,
+    ikona: selIkona,
+    tip: 'kuca',
+    aktivna: true
+  };
+  const b = document.getElementById('propSubmit');
+  b.disabled = true; b.textContent = 'Spremanje...';
+  setSync('loading','Spremanje');
+  try {
+    if (editPropId) await patch('nekretnine', editPropId, body);
+    else await post('nekretnine', body);
+    closePropModal();
+    await fetchAll();
+    showToast('Spremljeno');
+  } catch(e) {
+    b.disabled = false; b.textContent = 'Spremi';
+    setSync('err','Greška'); showToast('Greška pri spremanju', true);
+  }
+}
+
+// ══ NAVIGACIJA ══════════════════════════════════════
+function switchView(v) {
+  view = v;
+  ['Portfelj','Troskovi','Najam','Analiza'].forEach(x => {
+    document.getElementById('view'+x).classList.toggle('active', x===v);
+    document.getElementById('nav'+x).classList.toggle('active', x===v);
+  });
+  render();
+}
+
+// ══ INIT ════════════════════════════════════════════
+fetchAll();
+setInterval(fetchAll, 30000);
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') fetchAll(); });
+</script>
+</body>
+</html>
