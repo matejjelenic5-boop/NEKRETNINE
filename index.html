@@ -619,8 +619,9 @@ const TIPOVI = [
   { id:'rezija_vuk',   name:'Režije Vukovarska',   icon:'💡', color:'#0984e3', kategorija:'rezijeVuk', match:['Vukovarska'] },
   { id:'rezija_div',   name:'Režije Divaltova',    icon:'💡', color:'#0984e3', kategorija:'rezijeDiv', match:['Divaltova'] },
   { id:'rezija_rei',   name:'Režije Reisnerova',   icon:'💡', color:'#0984e3', kategorija:'rezijeRei', match:['Reisnerova'] },
-  { id:'radovi',       name:'Radovi na kući',      icon:'👷', color:'#cd853f', kategorija:'majstor',   match:null },
-  { id:'materijal',    name:'Materijal na kući',   icon:'🧱', color:'#00b894', kategorija:'materijal', match:null },
+  { id:'majstor',       name:'Majstor',             icon:'👷', color:'#cd853f', kategorija:'majstor',   match:null },
+  { id:'materijal',     name:'Materijal',           icon:'🧱', color:'#00b894', kategorija:'materijal', match:null },
+  { id:'papiri',        name:'Papiri',              icon:'📋', color:'#6c5ce7', kategorija:'ostalo',    match:null },
 ];
 const STATUSI = {
   'najam':        { l:'U najmu',      c:'var(--income)' },
@@ -656,6 +657,18 @@ const mKey = d => (d||'').slice(0,7);
 const mLabel = k => { const [y,m]=k.split('-'); return MONTHS[parseInt(m,10)-1].slice(0,3)+' '+y.slice(2); };
 const tipById = id => TIPOVI.find(t=>t.id===id) || TIPOVI[TIPOVI.length-1];
 const npById = id => nekretnine.find(n=>String(n.id)===String(id)) || null;
+function velikaKucaId() {
+  const n = nekretnine.find(x => x.naziv.includes('Vukovarska') && x.naziv.includes('Velika'));
+  return n ? n.id : null;
+}
+function kategorijaFor(tipId, npId) {
+  const vkId = velikaKucaId();
+  const isVelika = vkId !== null && String(npId) === String(vkId);
+  if (tipId === 'majstor')   return isVelika ? 'vuk354maj' : 'majstor';
+  if (tipId === 'materijal') return isVelika ? 'vuk354mat' : 'materijal';
+  if (tipId === 'papiri')    return isVelika ? 'vuk354pap' : 'ostalo';
+  return tipById(tipId).kategorija;
+}
 function npBoja(n) { return n.boja || BOJE[(n.id||0) % BOJE.length]; }
 function npKratko(n) { return n.naziv.includes('—') ? n.naziv.split('—')[1].trim() : n.naziv.split(',')[0]; }
 const H = { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY };
@@ -727,7 +740,7 @@ function propStats(npId) {
   const nm = Math.max(meseci.size, 1);
   const rate = t.filter(x=>x.tip==='rata').sort((a,b)=>b.date.localeCompare(a.date));
   const rezijaTipovi = ['rezija_vuk','rezija_div','rezija_rei','rezija'];
-  const ulozenoTipovi = ['poboljsanje','radovi','materijal'];
+  const ulozenoTipovi = ['poboljsanje','majstor','materijal','papiri'];
   const porezTipovi = ['porez_najam','porez_nekret','porez'];
   return {
     ulozeno:   sum(t.filter(x=>ulozenoTipovi.includes(x.tip))),
@@ -1067,7 +1080,7 @@ async function addExpense() {
     await post('troskovi', {
       opis: desc || t.name,
       iznos: amount,
-      kategorija: t.kategorija,
+      kategorija: kategorijaFor(selTip, npId),
       tko: 'Matej',
       datum: date,
       nekretnina_id: npId === null ? null : parseInt(npId,10),
