@@ -613,12 +613,14 @@ const SUPABASE_URL = 'https://erlgqhhzihqsjtzqcxta.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVybGdxaGh6aWhxc2p0enFjeHRhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwMjc5ODksImV4cCI6MjA5NjYwMzk4OX0.r8dFG0vhEErj2NuSa_hEiLExgJoV3lOgJ-fJw0Nz6I8';
 
 const TIPOVI = [
-  { id:'rata',        name:'Rata kredita',  icon:'🏦', color:'#fd9644', kategorija:'kredit' },
-  { id:'rezija',      name:'Režija',        icon:'💡', color:'#0984e3', kategorija:'rezijeVuk' },
-  { id:'poboljsanje', name:'Poboljšanje',   icon:'🧱', color:'#00b894', kategorija:'materijal' },
-  { id:'odrzavanje',  name:'Održavanje',    icon:'🔧', color:'#778ca3', kategorija:'kuca' },
-  { id:'popravak',    name:'Izv. popravak', icon:'⚠️', color:'#e17055', kategorija:'kuca' },
-  { id:'porez',       name:'Porez',         icon:'🧾', color:'#d63031', kategorija:'porezi' },
+  { id:'rata',         name:'Rata kredita',        icon:'🏦', color:'#fd9644', kategorija:'kredit',    match:null },
+  { id:'porez_najam',  name:'Porez na najam',      icon:'🧾', color:'#d63031', kategorija:'porezi',    match:'najam' },
+  { id:'porez_nekret', name:'Porez na nekretninu', icon:'🏛️', color:'#c0392b', kategorija:'porezi',    match:'opce' },
+  { id:'rezija_vuk',   name:'Režije Vukovarska',   icon:'💡', color:'#0984e3', kategorija:'rezijeVuk', match:['Vukovarska'] },
+  { id:'rezija_div',   name:'Režije Divaltova',    icon:'💡', color:'#0984e3', kategorija:'rezijeDiv', match:['Divaltova'] },
+  { id:'rezija_rei',   name:'Režije Reisnerova',   icon:'💡', color:'#0984e3', kategorija:'rezijeRei', match:['Reisnerova'] },
+  { id:'radovi',       name:'Radovi na kući',      icon:'👷', color:'#cd853f', kategorija:'majstor',   match:null },
+  { id:'materijal',    name:'Materijal na kući',   icon:'🧱', color:'#00b894', kategorija:'materijal', match:null },
 ];
 const STATUSI = {
   'najam':        { l:'U najmu',      c:'var(--income)' },
@@ -724,10 +726,14 @@ function propStats(npId) {
   const meseci = new Set([...t, ...p].map(x=>mKey(x.date)).filter(Boolean));
   const nm = Math.max(meseci.size, 1);
   const rate = t.filter(x=>x.tip==='rata').sort((a,b)=>b.date.localeCompare(a.date));
+  const rezijaTipovi = ['rezija_vuk','rezija_div','rezija_rei','rezija'];
+  const ulozenoTipovi = ['poboljsanje','radovi','materijal'];
+  const porezTipovi = ['porez_najam','porez_nekret','porez'];
   return {
-    ulozeno:   sum(t.filter(x=>x.tip==='poboljsanje')),
-    rezije:    sum(t.filter(x=>x.tip==='rezija')) / nm,
+    ulozeno:   sum(t.filter(x=>ulozenoTipovi.includes(x.tip))),
+    rezije:    sum(t.filter(x=>rezijaTipovi.includes(x.tip))) / nm,
     odrzavanje:sum(t.filter(x=>x.tip==='odrzavanje' || x.tip==='popravak')) / nm,
+    porezi:    sum(t.filter(x=>porezTipovi.includes(x.tip))),
     rata:      rate.length ? rate[0].amount : null,
     najamUk:   sum(p),
     svi:       sum(t),
@@ -913,7 +919,7 @@ function renderAnaliza() {
   const cfUk = stats.reduce((a,x)=>{ const c = cashFlow(x.n, x.s); return a + (c||0); }, 0);
   const uNajmu = nekretnine.filter(n=>n.status==='najam').length;
   const vrijednostUk = nekretnine.reduce((a,n)=>a+(n.vrijednost||0), 0);
-  const porezPortfelj = troskovi.filter(x=>!x.np && x.tip==='porez').reduce((a,x)=>a+x.amount,0);
+  const porezPortfelj = troskovi.filter(x=>!x.np && (x.tip==='porez' || x.tip==='porez_nekret')).reduce((a,x)=>a+x.amount,0);
 
   let h = '<div class="an-kpi">' +
     kpi('Uloženo ukupno', fmt(ulozenoUk)+' €', nekretnine.length + ' nekretnine', 'var(--accent)') +
@@ -940,7 +946,8 @@ function renderAnaliza() {
         '<div style="flex:1;min-width:0"><div class="np-n" style="font-size:14px">' + n.naziv + '</div></div>' +
         '<div class="badge" style="background:' + iconTint(boja) + ';color:' + st.c + '">' + st.l + '</div>' +
       '</div>' +
-      frow('Uloženo (poboljšanja)', s.ulozeno ? fmt(s.ulozeno)+' €' : '—', 'var(--vuk)') +
+      frow('Uloženo (radovi + materijal)', s.ulozeno ? fmt(s.ulozeno)+' €' : '—', 'var(--vuk)') +
+      frow('Porezi ukupno', s.porezi ? fmt(s.porezi)+' €' : '—', '') +
       frow('Ukupno troškova', fmt(s.svi)+' € · ' + s.brojUnosa + ' unosa', '') +
       frow('Najamnina', n.najamnina ? fmt(n.najamnina)+' €' : 'nije uneseno', n.najamnina?'var(--income)':'var(--text-3)') +
       frow('Rata kredita', s.rata ? fmt(s.rata)+' €' : 'nije uneseno', s.rata?'var(--warn)':'var(--text-3)') +
@@ -997,13 +1004,22 @@ function toggleFab() {
 }
 
 // ══ MODAL: TROŠAK ═══════════════════════════════════
-function propOptions(sel) {
-  return nekretnine.map(n => '<option value="' + n.id + '"' + (String(sel)===String(n.id)?' selected':'') + '>' +
+function propOptions(sel, list) {
+  const arr = list || nekretnine;
+  return arr.map(n => '<option value="' + n.id + '"' + (String(sel)===String(n.id)?' selected':'') + '>' +
     (n.ikona||'🏠') + '  ' + n.naziv + '</option>').join('');
+}
+function propsForTip(t) {
+  if (!t || !t.match) return nekretnine;
+  if (t.match === 'najam') return nekretnine.filter(n => n.status === 'najam');
+  if (t.match === 'opce') return nekretnine;
+  if (Array.isArray(t.match)) return nekretnine.filter(n => t.match.some(m => n.naziv.includes(m)));
+  return nekretnine;
 }
 function openExpenseModal() {
   if (fabOpen) toggleFab();
   if (!nekretnine.length) { showToast('Prvo dodaj nekretninu', true); return; }
+  selTip = null;
   document.getElementById('expProp').innerHTML = propOptions(filterProp);
   document.getElementById('expTipGrid').innerHTML = TIPOVI.map(t =>
     '<div class="cat-btn" id="tb-' + t.id + '" onclick="selectTip(\'' + t.id + '\')">' +
@@ -1024,9 +1040,18 @@ function selectTip(id) {
   selTip = id;
   document.querySelectorAll('#expTipGrid .cat-btn').forEach(b=>b.classList.remove('selected'));
   document.getElementById('tb-'+id).classList.add('selected');
+  const t = tipById(id);
+  const opts = propsForTip(t);
+  const sel = document.getElementById('expProp');
+  if (t.match === 'opce') {
+    sel.innerHTML = '<option value="">🏛️ Opće (nije vezano na nekretninu)</option>' + propOptions(null, opts);
+  } else {
+    sel.innerHTML = propOptions(opts.length === 1 ? opts[0].id : filterProp, opts);
+  }
 }
 async function addExpense() {
-  const npId = document.getElementById('expProp').value;
+  const npRaw = document.getElementById('expProp').value;
+  const npId = npRaw === '' ? null : npRaw;
   const desc = document.getElementById('expDesc').value.trim();
   const amount = parseFloat(document.getElementById('expAmount').value);
   const date = document.getElementById('expDate').value;
@@ -1034,6 +1059,7 @@ async function addExpense() {
   if (!amount || amount <= 0) { showToast('Unesi iznos', true); return; }
   if (!date) { showToast('Odaberi datum', true); return; }
   const t = tipById(selTip);
+  if (npId === null && t.match !== 'opce') { showToast('Odaberi nekretninu', true); return; }
   const b = document.getElementById('expSubmit');
   b.disabled = true; b.textContent = 'Spremanje...';
   setSync('loading','Spremanje');
@@ -1044,7 +1070,7 @@ async function addExpense() {
       kategorija: t.kategorija,
       tko: 'Matej',
       datum: date,
-      nekretnina_id: parseInt(npId,10),
+      nekretnina_id: npId === null ? null : parseInt(npId,10),
       np_tip: selTip
     });
     closeExpenseModal();
